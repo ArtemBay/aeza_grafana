@@ -304,7 +304,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "rate(node_network_receive_bytes_total{device=\"ens3\"}[5m])",
+          "expr": "label_replace(rate(node_network_receive_bytes_total{device=\"ens3\"}[5m]), \"instance\", \"$1\", \"instance\", \"(.*):.*\")",
           "format": "time_series",
           "legendFormat": "{{instance}}",
           "range": true,
@@ -330,6 +330,6 @@
   "timezone": "browser",
   "title": "Aeza",
   "uid": "eecjtinb08z5sf",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }
