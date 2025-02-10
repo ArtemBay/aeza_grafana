@@ -3,5 +3,5 @@ port: 6060
 directory: /data
 #Аутентификация
 users:
-  - username: $WEBDAV_LOGIN
-    password: $WEBDAV_PASSWORD
+  - username: changeme
+    password: changeme
