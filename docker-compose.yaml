@@ -12,6 +12,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - SYNCTHING_DOMAIN=${SYNCTHING_DOMAIN}
+      - WEBDAV_DOMEN=${WEBDAV_DOMEN}
     networks:
       - reverse-proxy
     extra_hosts:
@@ -38,6 +41,9 @@ services:
     image: ghcr.io/hacdias/webdav:latest
     container_name: webdav
     restart: unless-stopped
+    environment:
+      - WEBDAV_LOGIN=${WEBDAV_LOGIN}
+      - WEBDAV_PASSWORD=${WEBDAV_PASSWORD}
     volumes:
       - ./syncthing/files:/data
       - ./webdav/config/config.yml:/config.yml:ro
