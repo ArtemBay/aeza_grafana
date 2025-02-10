@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: unless-stopped
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./syncthing/config:/syncthing/config
+      - ./webdav/data:/var/www/html
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "${SYNCTHING_DOMAIN}:${DOCKER_HOST_IP}"
+      - "${WEBDAV_DOMAIN}:${DOCKER_HOST_IP}"
+
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    restart: unless-stopped
+    volumes:
+      - ./syncthing/files:/var/syncthing/
+      - ./syncthing/config:/config
+      - ./syncthing/data:/data
+    networks:
+      - reverse-proxy
+    expose:
+      - "8384"
+      - "22000"
+    extra_hosts:
+      - "${SYNCTHING_DOMAIN}:${DOCKER_HOST_IP}"
+
+  webdav:
+    image: ghcr.io/hacdias/webdav:latest
+    container_name: webdav
+    restart: unless-stopped
+    volumes:
+      - ./syncthing/files:/data
+      - ./webdav/config/config.yml:/config.yml:ro
+    networks:
+      - reverse-proxy
+    extra_hosts:
+      - "${WEBDAV_DOMAIN}:${DOCKER_HOST_IP}"
+
+networks:
+  reverse-proxy:

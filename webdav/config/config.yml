@@ -1,0 +1,7 @@
+address: 0.0.0.0
+port: 6060
+directory: /data
+#Аутентификация
+users:
+  - username: ${WEBDAV_LOGIN}
+    password: ${WEBDAV_PASSWORD}
